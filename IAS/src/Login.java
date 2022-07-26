@@ -17,9 +17,9 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 
-public class login {
+public class Login {
 
-	JFrame Login;
+	JFrame login;
 	private JTextField username;
 	private JPasswordField password;
 	
@@ -30,6 +30,8 @@ public class login {
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	
+	public static int id;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -37,8 +39,8 @@ public class login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					login window = new login();
-					window.Login.setVisible(true);
+					Login window = new Login();
+					window.login.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,7 +51,7 @@ public class login {
 	/**
 	 * Create the application.
 	 */
-	public login() {
+	public Login() {
 		initialize();
 	}
 
@@ -60,22 +62,22 @@ public class login {
 
 	@SuppressWarnings("serial")
 	private void initialize() {
-		Login = new JFrame();
-		Login.setTitle("Technovation Cashier System");
-		Login.setBounds(100, 100, 1280, 720);
-		Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Login.getContentPane().setLayout(null);
+		login = new JFrame();
+		login.setTitle("Technovation - Log In");
+		login.setBounds(330, 150, 1280, 720);
+		login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		login.getContentPane().setLayout(null);
 		
 		JPanel content = new JPanel(){
 			public void paintComponent(Graphics g) {
-				ImageIcon image = new ImageIcon("bg.jpg");
+				ImageIcon image = new ImageIcon("img\\bg-logo.jpg");
 				Image bg = image.getImage();
 
-				g.drawImage(bg, 0, 0, 1280, 720, Login);
+				g.drawImage(bg, 0, 0, 1280, 720, login);
 			}
 		};
 		content.setBounds(0, 0, 1264, 681);
-		Login.getContentPane().add(content);
+		login.getContentPane().add(content);
 		content.setLayout(null);
 		
 		JLabel lblUsername = new JLabel("Username");
@@ -114,17 +116,19 @@ public class login {
 					rs = ps.executeQuery();
 						
 						if(username.getText().equals("")||passString.equals("")) {
-							JOptionPane.showMessageDialog(Login,"Username/Password are Required to Log In","Credentials Required",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(login,"Username/Password are Required to Log In","Credentials Required",JOptionPane.ERROR_MESSAGE);
 						}
 						else if (rs.next() == false) {
-	                       JOptionPane.showMessageDialog(Login,"Username/Password is Incorrect","Log In Error",JOptionPane.ERROR_MESSAGE);
+	                       JOptionPane.showMessageDialog(login,"Username/Password is Incorrect","Log In Error",JOptionPane.ERROR_MESSAGE);
 	                       username.setText("");
 	                       password.setText("");
 	                    }
 						else {                   
-	                            JOptionPane.showMessageDialog(Login,"Login credentials matched","Log In Succesful",JOptionPane.INFORMATION_MESSAGE);
-		                        username.setText("");
-		                        password.setText("");
+	                            JOptionPane.showMessageDialog(login,"Login credentials matched","Log In Succesful",JOptionPane.INFORMATION_MESSAGE);
+	                            id = rs.getInt("employee_num");
+		                        login.dispose();
+		                        MainMenu mm = new MainMenu();
+		                        mm.menu.setVisible(true);
 	                         }                         
 			        }
 						catch(ClassNotFoundException | SQLException e1) {
@@ -139,10 +143,10 @@ public class login {
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int input = JOptionPane.showConfirmDialog(Login, "Do you really want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				int input = JOptionPane.showConfirmDialog(login, "Do you really want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				
 				if(input==0) {
-					Login.dispose();
+					login.dispose();
 				}
 			}
 		});
